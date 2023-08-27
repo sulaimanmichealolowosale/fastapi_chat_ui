@@ -1,0 +1,99 @@
+
+
+<Broadcast>:
+    name:"broadcast"
+    MDBoxLayout:
+        orientation: 'horizontal'
+        md_bg_color:rgba(52, 0 , 231, 255)
+        size_hint:1, .13
+        pos_hint:{"left":1, "top":1}
+        radius:[5, 5, 0, 0]
+        
+        MDIconButton:
+            icon:"arrow-left"
+            pos_hint:{"center_y":.5}
+            theme_text_color:"Custom"
+            text_color:(1,1,1,1)
+            on_release:
+                root.manager.transition.direction="left"
+                root.manager.current="chat"
+        
+        MDLabel:
+            text: "Broadcast"
+            haligh:"left"
+            font_style:"H4"
+            color:[1,1,1,1]
+
+    MDScrollView:
+        effect_cls: "ScrollEffect"
+        id:scroll_view
+        bar_color:(0,0,1,1)
+        bar_inactive_color:(0,0,1,.5)
+        color:0,0,1,1
+        size_hint_y:.77
+        pos_hint:{"x":0, "y":.09}
+        do_scroll_x:False
+        scroll_y:0
+        do_scroll_y:True
+        GridLayout:
+            id: message_grid
+            size:(root.width, root.height)
+            size_hint_x:None
+            size_hint_y:None
+            cols:1
+            padding:(10, 0, 10, 0)
+            spacing: 10
+            height:self.minimum_height
+            # orientation: 'bt-rl'
+    MDRelativeLayout:
+        size_hint: .1, .1
+        pos_hint:{"center_x":.5, "center_y":.15}
+
+        MDIconButton:
+            icon:"arrow-down" if scroll_view.scroll_y != 0 else ""
+            pos_hint: {'center_x': 0.5, 'center_y': 0.5}
+            on_press: scroll_view.scroll_y=0
+
+    MDRelativeLayout:
+        id:text_parent
+        cols:2
+        size_hint:1, .05
+        radius:[5, 5, 0,0]
+        pos_hint: {'center_y': 0.03}
+        MDTextField:
+            id:message
+            text:"this is a messagesb jsbd"
+            hint_text:"Type your message"
+            helper_text: "Start by typing"
+            required: True
+            size_hint_x:.8
+            font_size:"12sp"
+            cursor_width:"2sp"
+            max_height: "200dp"
+            mode: "fill"
+            cursor_color:rgba(0,0,59,255)
+            multiline:True
+            padding: 10
+            on_focus:root.on_focus(self.focus)
+        MDIconButton:
+            id:send_btn
+            icon:"file"
+            pos_hint: {'center_x': 0.85}
+            theme_text_color:"Hint"
+            text_color:(1,1,1,1)
+            on_press:root.choose_file()
+        MDIconButton:
+            id:send_btn
+            icon:"send"
+            pos_hint: {'x': .9}
+            theme_text_color:"Hint"
+            text_color:(1,1,1,1)
+            on_press:root.send_message(message) if message.text != "" else print("message cannot be empty")
+
+    MDSpinner:
+        active:root.spinner_state
+        size_hint:None, None
+        height: dp(50)
+        width: dp(50)
+        pos_hint:{'center_x': .5, 'center_y': .5}
+    
